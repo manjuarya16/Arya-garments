@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
+import API_BASE_URL from '../api/config';
 import { ShoppingBag, Star, CheckCircle } from 'lucide-react';
 
 const Products = () => {
@@ -12,7 +13,7 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:5000/api/products');
+        const response = await axios.get(`${API_BASE_URL}/products`);
         setProducts(response.data);
       } catch (error) {
         console.error('Error fetching products:', error);

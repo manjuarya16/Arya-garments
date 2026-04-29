@@ -22,7 +22,7 @@ const Navbar = () => {
           >
             <Shirt size={32} />
           </motion.div>
-          Arga Garments
+          Arya Garments
         </Link>
         <ul className="nav-links">
           {navLinks.map((link) => (

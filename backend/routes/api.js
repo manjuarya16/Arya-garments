@@ -39,7 +39,7 @@ router.post('/contact', async (req, res) => {
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: 'manjuarya102@gmail.com',
-        subject: `New Arga Garments Inquiry from ${name}`,
+        subject: `New Arya Garments Inquiry from ${name}`,
         text: `You have received a new inquiry from the website.\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
       };
 

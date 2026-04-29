@@ -7,10 +7,10 @@ const Footer = () => {
       <div className="container footer-content">
         <div className="footer-logo">
           <Shirt size={24} style={{ display: 'inline-block', marginRight: '8px', verticalAlign: 'middle' }} />
-          Arga Garments
+          Arya Garments
         </div>
         <p className="footer-text mt-4" style={{ fontSize: '0.875rem' }}>
-          &copy; {new Date().getFullYear()} Arga Garments. All rights reserved.
+          &copy; {new Date().getFullYear()} Arya Garments. All rights reserved.
         </p>
       </div>
     </footer>

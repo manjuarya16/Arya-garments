@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import API_BASE_URL from '../api/config';
 import { MapPin, Phone, Mail, CheckCircle } from 'lucide-react';
 
 const Contact = () => {
@@ -16,7 +17,7 @@ const Contact = () => {
     setStatus({ type: '', message: '' });
 
     try {
-      const response = await axios.post('http://localhost:5000/api/contact', formData);
+      const response = await axios.post(`${API_BASE_URL}/contact`, formData);
       setStatus({ type: 'success', message: response.data.message || 'Message sent successfully!' });
       setFormData({ name: '', email: '', message: '' });
     } catch (error) {
