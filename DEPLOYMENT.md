@@ -2,13 +2,13 @@
 
 This guide explains how to deploy your MERN stack application for free so you can show it to other users.
 
-## 1. Database (MongoDB Atlas)
-1. Sign up for [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
-2. Create a **Shared Cluster** (Free).
-3. In **Network Access**, add `0.0.0.0/0` (allows connections from any IP).
-4. In **Database Access**, create a user with a username and password.
-5. Click **Connect** > **Drivers** and copy the Connection String. It looks like:
-   `mongodb+srv://<username>:<password>@cluster0.mongodb.net/?retryWrites=true&w=majority`
+## 1. Database (Render PostgreSQL)
+1. Log in to [Render](https://render.com/).
+2. Click **New +** > **PostgreSQL**.
+3. Name your database (e.g., `arya_garments_db`).
+4. Select the **Free** tier.
+5. Once created, copy the **Internal Database URL** (for backend) or **External Database URL** (for local testing).
+   It looks like: `postgres://user:password@hostname:port/dbname`
 
 ## 2. Backend (Render.com)
 1. Push your code to a **GitHub** repository.
@@ -19,7 +19,7 @@ This guide explains how to deploy your MERN stack application for free so you ca
 6. Set **Build Command** to `npm install`.
 7. Set **Start Command** to `npm start`.
 8. In **Environment Variables**, add:
-   - `MONGODB_URI`: (Your MongoDB Atlas string)
+   - `DATABASE_URL`: (Your Render PostgreSQL Internal URL)
    - `EMAIL_USER`: (Optional: your Gmail)
    - `EMAIL_PASS`: (Optional: Gmail App Password)
 9. Once deployed, copy your Render URL (e.g., `https://arya-garments-api.onrender.com`).

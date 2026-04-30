@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const sequelize = require('./config/database');
 const Product = require('./models/Product');
 require('dotenv').config();
 
@@ -40,15 +40,23 @@ const dummyProducts = [
   }
 ];
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/garment-manufacturing')
-  .then(async () => {
-    console.log('Connected to MongoDB. Seeding data...');
-    await Product.deleteMany({});
-    await Product.insertMany(dummyProducts);
+const seedDatabase = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Connected to PostgreSQL for seeding...');
+    
+    // Sync models and drop existing data
+    await sequelize.sync({ force: true });
+    console.log('Database synced (all tables recreated).');
+
+    await Product.bulkCreate(dummyProducts);
     console.log('Data seeded successfully!');
-    mongoose.disconnect();
-  })
-  .catch(err => {
-    console.error('Failed to seed data', err);
-    mongoose.disconnect();
-  });
+    
+    process.exit(0);
+  } catch (err) {
+    console.error('Failed to seed data:', err);
+    process.exit(1);
+  }
+};
+
+seedDatabase();

@@ -2,31 +2,29 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product');
 const Contact = require('../models/Contact');
+const nodemailer = require('nodemailer');
 
 // Get all products
 router.get('/products', async (req, res) => {
   try {
     const category = req.query.category;
-    const filter = category ? { category } : {};
-    const products = await Product.find(filter);
+    const filter = category ? { where: { category } } : {};
+    const products = await Product.findAll(filter);
     res.json(products);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-const nodemailer = require('nodemailer');
-
 // Submit contact form
 router.post('/contact', async (req, res) => {
   try {
     const { name, email, message } = req.body;
     
-    // Save to DB
-    const newContact = new Contact({ name, email, message });
-    await newContact.save();
+    // Save to DB (PostgreSQL)
+    const newContact = await Contact.create({ name, email, message });
 
-    // Send email notification
+    // Send email notification (keeps existing logic)
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
       const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -45,11 +43,9 @@ router.post('/contact', async (req, res) => {
 
       await transporter.sendMail(mailOptions);
       console.log('Email notification sent to manjuarya102@gmail.com');
-    } else {
-      console.log('Email credentials not set. Email not sent.');
     }
 
-    res.status(201).json({ message: 'Contact submitted successfully!' });
+    res.status(201).json({ message: 'Contact submitted successfully!', data: newContact });
   } catch (err) {
     console.error(err);
     res.status(400).json({ message: err.message });

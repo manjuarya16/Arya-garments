@@ -1,7 +1,7 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
+const sequelize = require('./config/database');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -14,11 +14,18 @@ app.use(express.json());
 const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
 
-// Database Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/garment-manufacturing')
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Failed to connect to MongoDB', err));
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+// Database Connection & Sync
+sequelize.authenticate()
+  .then(() => {
+    console.log('PostgreSQL connected successfully.');
+    return sequelize.sync({ alter: true });
+  })
+  .then(() => {
+    console.log('Database synchronized.');
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('Database connection error:', err);
+  });
